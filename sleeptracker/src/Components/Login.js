@@ -1,10 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Field, withFormik} from 'formik';
 import Button from '@material-ui/core/Button'
+import { makeStyles } from '@material-ui/core';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { textAlign } from '@material-ui/system';
+
+const useStyles = makeStyles({
+    wrapper: {
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+    form: {
+        width: '50%',
+        height: '50%',
+        display: 'flex',
+        flexFlow: 'column wrap',
+        alignItems: 'center',
+        border: '2px solid black',
+    },  
+    header: {
+        color: '#F7FA78',
+        background: '#1A185B',
+        width: '100%',
+        marginBottom: '40px'
+    },
+    inputs: {
+        width: '35%',
+        textAlign: 'center',
+        margin: '20px',
+        padding: '10px 0 10px 0',
+    },
+    button: {
+        background: '#1A185B',
+        color: 'white',
+    }
+})
 
 const Login = ({values, errors, touched, status}) => {
+    const classes= useStyles();
     const [user, setUser] = useState({})
 
     useEffect(() => {
@@ -13,11 +51,19 @@ const Login = ({values, errors, touched, status}) => {
         }
     }, [status])
     return (
-        <Form>
-            <Field type="text" name="username" placeholder="Username"/>
-            <Field type="password" name="password" placeholder="Password" />
-            <Button variant="contained" color="primary" type="submit">Log In</Button>
-        </Form>
+        <div className={classes.wrapper}>
+            <Form className={classes.form}>
+                <div className={classes.header}>
+                    <h1>SleepTracker</h1>
+                </div>
+                {touched.username && errors.username && <p>Username required!</p>}
+                <Field className={classes.inputs} type="text" name="username" placeholder="Username"/>
+
+                {touched.password && errors.password && <p>Password required!</p>}
+                <Field className={classes.inputs} type="password" name="password" placeholder="Password" />
+                <Button variant="contained" className={classes.button} type="submit">Log In</Button>
+            </Form>
+        </div>
     )
 }
 
@@ -29,15 +75,16 @@ mapPropsToValues: (props) => {
     }
 },
 validationSchema: Yup.object().shape({
-    username: Yup.string().required("Username required!"),
-    password: Yup.string().min(6, "Password must be at least 6 characters!").required("Password is required!")
+    username: Yup.string().required(),
+    password: Yup.string().min(6).required()
 }),
 handleSubmit: (values, { setStatus }) => {
-    axios.post('', values)
-    .then(res => {
-        console.log(res.data);
-        setStatus(res.data);
-    })
-    .catch(err => console.log(err))
+    // axios.post('', values)
+    // .then(res => {
+    //     console.log(res.data);
+    //     setStatus(res.data);
+    // })
+    // .catch(err => console.log(err))
+    console.log(values);
 }
 })(Login);
