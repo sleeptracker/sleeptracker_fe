@@ -56,8 +56,8 @@ const Login = ({values, errors, touched, status}) => {
                 <div className={classes.header}>
                     <h1>SleepTracker</h1>
                 </div>
-                {touched.username && errors.username && <p>Username required!</p>}
-                <Field className={classes.inputs} type="text" name="username" placeholder="Username"/>
+                {touched.email && errors.email && <p>Email required!</p>}
+                <Field className={classes.inputs} type="text" name="email" placeholder="Email"/>
 
                 {touched.password && errors.password && <p>Password required!</p>}
                 <Field className={classes.inputs} type="password" name="password" placeholder="Password" />
@@ -70,12 +70,12 @@ const Login = ({values, errors, touched, status}) => {
 export default withFormik({
 mapPropsToValues: (props) => {
     return {
-        username: props.username || "",
+        email: props.email || "",
         password: props.password || ""
     }
 },
 validationSchema: Yup.object().shape({
-    username: Yup.string().required(),
+    email: Yup.string().email().required(),
     password: Yup.string().min(6).required()
 }),
 handleSubmit: (values, { setStatus }) => {
