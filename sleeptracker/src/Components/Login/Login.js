@@ -28,7 +28,7 @@ const useStyles = makeStyles({
         color: '#F7FA78',
         background: '#1A185B',
         width: '100%',
-        marginBottom: '40px'
+
     },
     inputs: {
         width: '35%',
@@ -44,7 +44,14 @@ const useStyles = makeStyles({
         textDecoration: 'none',
         color: '#1A185B',
 
-    }
+    },
+    // fields: {
+    //     width: '80%',
+    //     display: 'flex',
+    //     flexFlow: 'column wrap',
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    // }
 })
 
 const Login = ({ values, errors, touched, status, setUser, history }) => {
@@ -53,7 +60,7 @@ const Login = ({ values, errors, touched, status, setUser, history }) => {
     useEffect(() => {
         if (status) {
             setUser(status);
-            history.push('/Home/tracker');
+            history.push('/Home');
         }
     }, [status])
     return (
@@ -62,6 +69,7 @@ const Login = ({ values, errors, touched, status, setUser, history }) => {
                 <div className={classes.header}>
                     <h1>SleepTracker</h1>
                 </div>
+                {/* <div className={classes.fields}> */}
                 {touched.username && errors.username && <p>Username required!</p>}
                 <Field className={classes.inputs} type="text" name="username" placeholder="Username"/>
 
@@ -70,6 +78,7 @@ const Login = ({ values, errors, touched, status, setUser, history }) => {
                 <Button variant="contained" className={classes.button} type="submit">Log In</Button>
 
                 <p>Don't have an account ? <Link to="/SignUp" className={classes.link}>Sign Up!</Link></p>
+                {/* </div> */}
             </Form>
         </div>
     )
