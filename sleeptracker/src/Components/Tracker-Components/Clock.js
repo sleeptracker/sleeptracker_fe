@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { makeStyles } from '@material-ui/core';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import KeyboardArrowUpIcon from '@material-ui/icons/ExpandLess';
+import KeyboardArrowDownIcon from '@material-ui/icons/ExpandMore';
 
 
 const useStyles = makeStyles({
     timeBox: {
-        width: '15%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '200px',
         height: '100px',
         color: '#F7FA78',
-        backgroundColor: '#1A185B'
-    }
+        backgroundColor: '#1A185B',
+        fontSize: '30px'
+    },
+    clockContainer: {
+        width: '500px',
+        height: '300px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+        }
 })
 
 function Clock(props) {
@@ -20,18 +31,18 @@ function Clock(props) {
     console.log(props);
 
     return(
-        <div>
-            <ExpandLessIcon fontSize="large" />
+        <div className={classes.clockContainer}>
+            <KeyboardArrowUpIcon fontSize="large" />
                 <div className={classes.timeBox}>
                     <p>{props.hour}</p>
                 </div>
-            <ExpandMoreIcon fontSize="large" />
+            <KeyboardArrowDownIcon fontSize="large" />
 
-            <ExpandLessIcon fontSize="large" />
+            <KeyboardArrowUpIcon fontSize="large" />
                 <div className={classes.timeBox}>
                     <p>{props.minute}</p>
                 </div>
-            <ExpandMoreIcon fontSize="large" />
+            <KeyboardArrowDownIcon fontSize="large" />
         </div>
     )
 }
