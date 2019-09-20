@@ -58,7 +58,7 @@ const SignUp = ({values, errors, touched, status, setUser, history}) => {
             setUser(status);
             history.push('/Home');
         }
-    })
+    }, [status])
     return (
         <div className={classes.wrapper}>
             <Form className={classes.form} >

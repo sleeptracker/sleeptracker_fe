@@ -7,7 +7,7 @@ import NavBar from './Components/Nav/NavBar';
 import Tracker from './Components/Tracker';
 
 function App() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
   console.log(user);
   return (
     <div className="App">
@@ -15,8 +15,8 @@ function App() {
         <Route exact path='/' render={props => <Login {...props} setUser={setUser} /> } />
         <Route path="/SignUp" render={props => <SignUp {...props} setUser={setUser} /> } />
       </div>
-      <Route path='/Home' render={props => <NavBar {...props} user={user} /> } />
-      <Route path='/Home/tracker' render={props => <Tracker {...props} /> } />
+      <Route path='/Home' render={props => <NavBar {...props} user={user} setUser={setUser} /> } />
+      <Route path='/Home/Tracker' render={props => <Tracker {...props} /> } />
     </div>
   );
 }
