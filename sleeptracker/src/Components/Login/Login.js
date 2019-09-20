@@ -47,13 +47,13 @@ const useStyles = makeStyles({
     }
 })
 
-const Login = ({values, errors, touched, status}) => {
+const Login = ({values, errors, touched, status, setUser}) => {
     const classes= useStyles();
-    const [user, setUser] = useState({})
 
     useEffect(() => {
         if (status) {
-            setUser(status)
+            setUser(status);
+             
         }
     }, [status])
     return (
@@ -91,9 +91,13 @@ handleSubmit: (values, { setStatus }) => {
     .then(res => {
         let token = res.data.token;
         const userName = res.data.user.username;
-        console.log(userName)
-        console.log(token);
-        setStatus(token);
+        // console.log(userName)
+        // console.log(token);
+        localStorage.setItem("token", token)
+        setStatus({
+            token: token,
+            user: userName
+        });
     })
     .catch(err => console.log(err))
 }
