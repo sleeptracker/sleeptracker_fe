@@ -77,6 +77,10 @@ const useStyles = makeStyles(theme => ({
     }),
     marginLeft: 0,
   },
+  link: {
+    textDecoration: 'none',
+    color: 'black',
+  }
 
 }));
 
@@ -96,6 +100,11 @@ const NavBar = (props) => {
     }
     function handleMenu(event) {
       setAnchorEl(event.currentTarget);
+    }
+    
+    const handleLogout = () => {
+      props.setUser({});
+      props.history.push('/');
     }
 
     return (
@@ -130,7 +139,7 @@ const NavBar = (props) => {
               >
                 <AccountCircle />
                 <Typography variant="h6" nowrap>
-                   {props.user}
+                   {props.user.user}
                 </Typography>
               </IconButton>
             </div>
@@ -152,11 +161,23 @@ const NavBar = (props) => {
                 </div>
                 <Divider />
                 <List>
-                {['Home', 'Tracker', 'History', 'Logout'].map((text, index) => (
+                  <Link to="/Home" className={classes.link}>
+                    <ListItem button key="Home">
+                      <ListItemText primary="Home" />
+                    </ListItem>
+                  </Link>
+                {['Tracker', 'History'].map((text, index) => (
+                  <Link to={`/Home/${text}`} className={classes.link}>
                     <ListItem button key={text}>
                     <ListItemText primary={text} />
+                    
                     </ListItem>
+
+                    </Link>
                 ))}
+                <ListItem button key='Logout'>
+                  <ListItemText primary='Logout' onClick={handleLogout} />
+                </ListItem>
                 </List>
             </Drawer>
         </div>
