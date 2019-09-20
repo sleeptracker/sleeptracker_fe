@@ -47,13 +47,13 @@ const useStyles = makeStyles({
     }
 })
 
-const Login = ({values, errors, touched, status, setUser}) => {
+const Login = ({ values, errors, touched, status, setUser, history }) => {
     const classes= useStyles();
 
     useEffect(() => {
         if (status) {
             setUser(status);
-             
+            history.push('/Home/tracker');
         }
     }, [status])
     return (

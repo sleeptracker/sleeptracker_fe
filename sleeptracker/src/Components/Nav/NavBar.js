@@ -131,7 +131,6 @@ const NavBar = (props) => {
                 <AccountCircle />
                 <Typography variant="h6" nowrap>
                    {props.user}
-                   Dan
                 </Typography>
               </IconButton>
             </div>

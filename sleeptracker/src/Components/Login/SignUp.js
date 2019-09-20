@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withFormik, Field, Form } from 'formik';
 import { makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -50,8 +50,15 @@ const useStyles = makeStyles({
 })
 
 
-const SignUp = ({values, errors, touched, status}) => {
+const SignUp = ({values, errors, touched, status, setUser, history}) => {
     const classes=useStyles();
+
+    useEffect(() => {
+        if (status) {
+            setUser(status);
+            history.push('/Home');
+        }
+    })
     return (
         <div className={classes.wrapper}>
             <Form className={classes.form} >
@@ -106,8 +113,13 @@ export default withFormik({
         axios.post("https://get-sleeptracker.herokuapp.com/api/auth/register", values) 
         .then(res => {
             let token = res.data.token
+            let userName = res.data.user.username;
             console.log(token)
             localStorage.setItem("token", token)
+            setStatus({
+                token: token,
+                user: userName
+            })
         })
         .catch(err => console.log(err))
         console.log(values)
