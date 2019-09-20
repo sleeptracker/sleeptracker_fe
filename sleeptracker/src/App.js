@@ -13,7 +13,7 @@ function App() {
     <div className="App">
       <div>
         <Route exact path='/' render={props => <Login {...props} setUser={setUser} /> } />
-        <Route path="/SignUp" render={props => <SignUp {...props} /> } />
+        <Route path="/SignUp" render={props => <SignUp {...props} setUser={setUser} /> } />
       </div>
       <Route path='/Home' render={props => <NavBar {...props} user={user} /> } />
       <Route path='/Home/tracker' render={props => <Tracker {...props} /> } />
