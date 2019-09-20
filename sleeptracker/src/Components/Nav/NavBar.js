@@ -16,12 +16,14 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    flexGrow: 1,
   },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
@@ -29,7 +31,7 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
 
     }),
-    background: '#1A185B'
+    background: '#1A185B',
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -75,17 +77,15 @@ const useStyles = makeStyles(theme => ({
     }),
     marginLeft: 0,
   },
-  user: {
-      textAlign: 'right'
-  }
-}));
 
+}));
 
 
 const NavBar = (props) => {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
   
     function handleDrawerOpen() {
       setOpen(true);
@@ -94,9 +94,12 @@ const NavBar = (props) => {
     function handleDrawerClose() {
       setOpen(false);
     }
+    function handleMenu(event) {
+      setAnchorEl(event.currentTarget);
+    }
 
     return (
-        <div>
+        <div className={classes.root}>
             <CssBaseline />
             <AppBar
                 position="fixed"
@@ -104,7 +107,7 @@ const NavBar = (props) => {
                 [classes.appBarShift]: open,
                 })}
             >
-                <Toolbar>
+                <Toolbar className={classes.tool}>
                 <IconButton
                     color="inherit"
                     aria-label="open drawer"
@@ -117,9 +120,21 @@ const NavBar = (props) => {
                 <Typography variant="h6" noWrap>
                 SleepTracker 
                 </Typography>
-                <Typography variant="h6" noWrap className={classes.user}>
-                    {props.user}
+                <div className={classes.user}>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+                <Typography variant="h6" nowrap>
+                   {props.user}
+                   Dan
                 </Typography>
+              </IconButton>
+            </div>
                 </Toolbar>
             </AppBar>
             <Drawer
