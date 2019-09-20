@@ -12,17 +12,23 @@ const useStyles = makeStyles({
         alignItems: 'center',
         width: '200px',
         height: '100px',
-        color: '#F7FA78',
-        backgroundColor: '#1A185B',
-        fontSize: '30px'
+        color: '#00ff00',
+        backgroundColor: 'black',
+        fontSize: '30px',
+        boxShadow: '5px 5px 10px gray'
     },
     clockContainer: {
-        width: '500px',
+        width: '650px',
         height: '300px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center'
-        }
+    },
+    box: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    }
 })
 
 function Clock(props) {
@@ -32,17 +38,29 @@ function Clock(props) {
 
     return(
         <div className={classes.clockContainer}>
-            <KeyboardArrowUpIcon fontSize="large" />
-                <div className={classes.timeBox}>
-                    <p>{props.hour}</p>
-                </div>
-            <KeyboardArrowDownIcon fontSize="large" />
+            <div className={classes.box}>
+                <KeyboardArrowUpIcon fontSize="large" />
+                    <div className={classes.timeBox}>
+                        <p>{props.hour}</p>
+                    </div>
+                <KeyboardArrowDownIcon fontSize="large" />
+            </div>
 
-            <KeyboardArrowUpIcon fontSize="large" />
-                <div className={classes.timeBox}>
-                    <p>{props.minute}</p>
-                </div>
-            <KeyboardArrowDownIcon fontSize="large" />
+            <div className={classes.box}>
+                <KeyboardArrowUpIcon fontSize="large" />
+                    <div className={classes.timeBox}>
+                        <p>{props.minute}</p>
+                    </div>
+                <KeyboardArrowDownIcon fontSize="large" />
+            </div>
+
+            <div className={classes.box}>
+                <KeyboardArrowUpIcon fontSize="large" />
+                    <div className={classes.timeBox}>
+                        <p>{props.hemisphere}</p>
+                    </div>
+                <KeyboardArrowDownIcon fontSize="large" />
+            </div>
         </div>
     )
 }
