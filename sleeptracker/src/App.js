@@ -11,7 +11,7 @@ function App() {
   console.log(user);
   return (
     <div className="App">
-      <div className={Login}>
+      <div>
         <Route exact path='/' render={props => <Login {...props} setUser={setUser} /> } />
         <Route path="/SignUp" render={props => <SignUp {...props} /> } />
       </div>
