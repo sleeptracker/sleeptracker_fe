@@ -8,8 +8,8 @@ function App() {
   const [user, setUser] = useState("");
   return (
     <div className="App">
-      <Route exact path='/' render={props => <Login {...props} user={user} /> } />
-      <Route path='/tracker' render={props => <Tracker {...props} /> } />
+      {/* <Route exact path='/' render={props => <Login {...props} user={user} /> } /> */}
+      <Route path='/tracker' render={() => <Tracker />} />
     </div>
   );
 }
