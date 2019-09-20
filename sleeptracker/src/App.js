@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {Route} from 'react-router-dom';
 import Login from './Components/Login';
+import SignUp from './Components/SignUp';
 import Tracker from './Components/Tracker';
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
   return (
     <div className="App">
       <Route exact path='/' render={props => <Login {...props} user={user} /> } />
+      <Route path="/SignUp" render={props => <SignUp {...props} /> } />
       <Route path='/tracker' render={props => <Tracker {...props} /> } />
     </div>
   );
