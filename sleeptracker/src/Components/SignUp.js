@@ -16,20 +16,22 @@ const useStyles = makeStyles({
     },
     form: {
         width: '50%',
-        height: '50%',
+        height: '60%',
         display: 'flex',
         flexFlow: 'column wrap',
         alignItems: 'center',
+        justifyContent: 'center',
         border: '2px solid black',
     },  
     header: {
         color: '#F7FA78',
         background: '#1A185B',
         width: '100%',
-        marginBottom: '40px'
+        height: '15%',
+
     },
     inputs: {
-        width: '35%',
+        width: '50%',
         textAlign: 'center',
         margin: '20px',
         padding: '10px 0 10px 0',
@@ -37,6 +39,13 @@ const useStyles = makeStyles({
     button: {
         background: '#1A185B',
         color: 'white',
+    },
+    fields: {
+        width: '50%',
+        display: 'flex',
+        flexFlow: 'row wrap',
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 })
 
@@ -44,25 +53,32 @@ const useStyles = makeStyles({
 const SignUp = ({values, errors, touched, status}) => {
     const classes=useStyles();
     return (
-        <div classname={classes.wrapper}>
+        <div className={classes.wrapper}>
             <Form className={classes.form} >
                 <div className={classes.header}>
                     <h1>SleepTracker</h1>
                 </div>
-                {touched.email && errors.email && <p>Email required!</p>}
+                <div className={classes.fields}>
+                {touched.username && errors.username && <p className={classes.warning}>Username required!</p>}
+                <Field  className={classes.inputs} type="text" name="username" placeholder="Username" />
+
+                {touched.email && errors.email && <p className={classes.warning}>Email required!</p>}
                 <Field  className={classes.inputs} type="text" name="email" placeholder="Email" />
 
-                {touched.firstName && errors.firstName && <p>First Name required!</p>}
+                {touched.firstName && errors.firstName && <p className={classes.warning}>First Name required!</p>}
                 <Field  className={classes.inputs} type="text" name="firstName" placeholder="First Name" />
 
-                {touched.lastName && errors.lastName && <p>Last Name required!</p>}
+                {touched.lastName && errors.lastName && <p className={classes.warning}>Last Name required!</p>}
                 <Field  className={classes.inputs} type="text" name="lastName" placeholder="Last Name" />
 
-                {touched.password && errors.password && <p>Password required!</p>}
+                {touched.password && errors.password && <p className={classes.warning}>Password required!</p>}
                 <Field  className={classes.inputs} type="password" name="password" placeholder="Password" />
 
+                </div>
+                
                 <Button className={classes.button} variant="contained" type="submit">Sign Up</Button>
             </Form>
+            
         </div>
     )
 }
@@ -70,26 +86,30 @@ const SignUp = ({values, errors, touched, status}) => {
 export default withFormik({
     mapPropsToValues: (props) => {
         return {
-        email: props.email || "",
+        username: props.username || "",
+        password: props.password || "",
         firstName: props.firstName || "",
         lastName: props.lastName || "",
-        password: props.password || "",
+        email: props.email || ""
 
         }
 
     },
     validationSchema: Yup.object().shape({
-        email: Yup.string().email().required(),
+        username: Yup.string().min(4).required(),
+        password: Yup.string().min(6).required(),
         firstName: Yup.string().required(),
         lastName: Yup.string().required(),
-        password: Yup.string().min(6).required()
+        email: Yup.string().email().required()
     }),
     handleSubmit: (values, { setStatus }) => {
-        // axios.post('', values) 
-        // .then(res => {
-        //     console.log(res)
-        //     setStatus(res.data)
-        // })
-        // .catch(err => console.log(err))
+        axios.post("https://get-sleeptracker.herokuapp.com/api/auth/register", values) 
+        .then(res => {
+            let token = res.data.token
+            console.log(token)
+            localStorage.setItem("token", token)
+        })
+        .catch(err => console.log(err))
+        console.log(values)
     }
 })(SignUp);
