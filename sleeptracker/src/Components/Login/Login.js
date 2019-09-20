@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Form, Field, withFormik} from 'formik';
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { textAlign } from '@material-ui/system';
+
 
 const useStyles = makeStyles({
     wrapper: {
@@ -38,6 +39,11 @@ const useStyles = makeStyles({
     button: {
         background: '#1A185B',
         color: 'white',
+    },
+    link: {
+        textDecoration: 'none',
+        color: '#1A185B',
+
     }
 })
 
@@ -56,12 +62,14 @@ const Login = ({values, errors, touched, status}) => {
                 <div className={classes.header}>
                     <h1>SleepTracker</h1>
                 </div>
-                {touched.email && errors.email && <p>Email required!</p>}
-                <Field className={classes.inputs} type="text" name="email" placeholder="Email"/>
+                {touched.username && errors.username && <p>Username required!</p>}
+                <Field className={classes.inputs} type="text" name="username" placeholder="Username"/>
 
                 {touched.password && errors.password && <p>Password required!</p>}
                 <Field className={classes.inputs} type="password" name="password" placeholder="Password" />
                 <Button variant="contained" className={classes.button} type="submit">Log In</Button>
+
+                <p>Don't have an account ? <Link to="/SignUp" className={classes.link}>Sign Up!</Link></p>
             </Form>
         </div>
     )
@@ -70,21 +78,23 @@ const Login = ({values, errors, touched, status}) => {
 export default withFormik({
 mapPropsToValues: (props) => {
     return {
-        email: props.email || "",
+        username: props.username || "",
         password: props.password || ""
     }
 },
 validationSchema: Yup.object().shape({
-    email: Yup.string().email().required(),
+    username: Yup.string().min(4).required(),
     password: Yup.string().min(6).required()
 }),
 handleSubmit: (values, { setStatus }) => {
-    // axios.post('', values)
-    // .then(res => {
-    //     console.log(res.data);
-    //     setStatus(res.data);
-    // })
-    // .catch(err => console.log(err))
-    console.log(values);
+    axios.post('https://get-sleeptracker.herokuapp.com/api/auth/login', values)
+    .then(res => {
+        let token = res.data.token;
+        const userName = res.data.user.username;
+        console.log(userName)
+        console.log(token);
+        setStatus(token);
+    })
+    .catch(err => console.log(err))
 }
 })(Login);
