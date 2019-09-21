@@ -161,7 +161,7 @@ const NavBar = (props) => {
                 </div>
                 <Divider />
                 <List>
-                  <Link to="/Home" className={classes.link}>
+                  <Link to="/Home/home" className={classes.link}>
                     <ListItem button key="Home">
                       <ListItemText primary="Home" />
                     </ListItem>
