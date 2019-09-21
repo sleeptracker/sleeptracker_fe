@@ -138,7 +138,7 @@ const NavBar = (props) => {
                 color="inherit"
               >
                 <AccountCircle />
-                <Typography variant="h6" nowrap>
+                <Typography variant="h6" noWrap>
                    {props.user.user}
                 </Typography>
               </IconButton>

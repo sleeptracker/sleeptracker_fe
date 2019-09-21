@@ -9,6 +9,7 @@ const useStyles = makeStyles({
         alignItems: 'center',
         marginTop: '100px',
         justifyContent: 'center',
+
     },
     graph: {
         display: 'flex',
