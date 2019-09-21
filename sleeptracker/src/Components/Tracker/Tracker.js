@@ -1,5 +1,5 @@
 import React, {useState, useEffect } from 'react';
-import Clock from './Tracker/Clock';
+import Clock from './Clock';
 import { makeStyles } from '@material-ui/core';
 import moment from 'moment';
 const mnt = moment();
