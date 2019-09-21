@@ -4,7 +4,7 @@ import {Route} from 'react-router-dom';
 import Login from './Components/Login/Login';
 import SignUp from './Components/Login/SignUp';
 import NavBar from './Components/Nav/NavBar';
-import Tracker from './Components/Tracker';
+import Tracker from './Components/Tracker/Tracker';
 import HomePage from './Components/Home/HomePage';
 
 function App() {

@@ -40,7 +40,7 @@ function Clock(props) {
                     <p value="upArrow">{props.hour}</p>
                 </div>
                 <div onClick={() => props.handleTime('down', 'hour')}>
-                    <KeyboardArrowDownIcon fontSize="large" onClick={props.handleTime} />
+                    <KeyboardArrowDownIcon fontSize="large" />
                 </div>
             </div>
             <div className={classes.box}>
@@ -51,7 +51,7 @@ function Clock(props) {
                     <p>{props.minute}</p>
                 </div>
                 <div onClick={() => props.handleTime('down', 'min')}>
-                    <KeyboardArrowDownIcon fontSize="large" onClick={props.handleTime} />
+                    <KeyboardArrowDownIcon fontSize="large" />
                 </div>
             </div>
             <div className={classes.box}>
@@ -62,7 +62,7 @@ function Clock(props) {
                     <p>{props.hemisphere}</p>
                 </div>
                 <div onClick={() => props.handleTime('down', 'meridian')}>
-                    <KeyboardArrowDownIcon fontSize="large" onClick={props.handleTime} />
+                    <KeyboardArrowDownIcon fontSize="large" />
                 </div>
             </div>
         </div>
