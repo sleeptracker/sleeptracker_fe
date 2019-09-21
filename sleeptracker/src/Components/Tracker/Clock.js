@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core';
 import KeyboardArrowUpIcon from '@material-ui/icons/ExpandLess';
 import KeyboardArrowDownIcon from '@material-ui/icons/ExpandMore';
-
-
 const useStyles = makeStyles({
     timeBox: {
         display: 'flex',
@@ -30,39 +28,44 @@ const useStyles = makeStyles({
         alignItems: 'center'
     }
 })
-
 function Clock(props) {
     const classes = useStyles();
-
-    console.log(props);
-
-    return(
+    return (
         <div className={classes.clockContainer}>
             <div className={classes.box}>
-                <KeyboardArrowUpIcon fontSize="large" onClick={props.handleTime} />
-                    <div className={classes.timeBox}>
-                        <p>{props.hour}</p>
-                    </div>
-                <KeyboardArrowDownIcon fontSize="large" onClick={props.handleTime} />
+                <div onClick={() => props.handleTime('up', 'hour')}>
+                    <KeyboardArrowUpIcon className="UpArrow" value="upArrow" fontSize="large" />
+                </div>
+                <div className={classes.timeBox}>
+                    <p value="upArrow">{props.hour}</p>
+                </div>
+                <div onClick={() => props.handleTime('down', 'hour')}>
+                    <KeyboardArrowDownIcon fontSize="large" onClick={props.handleTime} />
+                </div>
             </div>
-
             <div className={classes.box}>
-                <KeyboardArrowUpIcon fontSize="large" onClick={props.handleTime} />
-                    <div className={classes.timeBox}>
-                        <p>{props.minute}</p>
-                    </div>
-                <KeyboardArrowDownIcon fontSize="large" onClick={props.handleTime} />
+                <div onClick={() => props.handleTime('up', 'min')}>
+                    <KeyboardArrowUpIcon fontSize="large" />
+                </div>
+                <div className={classes.timeBox}>
+                    <p>{props.minute}</p>
+                </div>
+                <div onClick={() => props.handleTime('down', 'min')}>
+                    <KeyboardArrowDownIcon fontSize="large" onClick={props.handleTime} />
+                </div>
             </div>
-
             <div className={classes.box}>
-                <KeyboardArrowUpIcon fontSize="large" onClick={props.handleTime} />
-                    <div className={classes.timeBox}>
-                        <p>{props.hemisphere}</p>
-                    </div>
-                <KeyboardArrowDownIcon fontSize="large" onClick={props.handleTime} />
+                <div onClick={() => props.handleTime('up', 'meridian')}>
+                    <KeyboardArrowUpIcon fontSize="large" />
+                </div>
+                <div className={classes.timeBox}>
+                    <p>{props.hemisphere}</p>
+                </div>
+                <div onClick={() => props.handleTime('down', 'meridian')}>
+                    <KeyboardArrowDownIcon fontSize="large" onClick={props.handleTime} />
+                </div>
             </div>
         </div>
     )
 }
-
 export default Clock;
