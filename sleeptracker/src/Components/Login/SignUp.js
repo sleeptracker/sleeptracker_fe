@@ -56,7 +56,7 @@ const SignUp = ({values, errors, touched, status, setUser, history}) => {
     useEffect(() => {
         if (status) {
             setUser(status);
-            history.push('/Home');
+            history.push('/Home/Home');
         }
     }, [status])
     return (
@@ -122,6 +122,6 @@ export default withFormik({
             })
         })
         .catch(err => console.log(err))
-        console.log(values)
+    
     }
 })(SignUp);

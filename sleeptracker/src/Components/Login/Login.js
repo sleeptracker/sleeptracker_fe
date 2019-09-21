@@ -18,9 +18,8 @@ const useStyles = makeStyles({
     },
     form: {
         width: '50%',
-        height: '50%',
         display: 'flex',
-        flexFlow: 'column wrap',
+        flexFlow: 'column nowrap',
         alignItems: 'center',
         border: '2px solid black',
     },  
@@ -39,10 +38,16 @@ const useStyles = makeStyles({
     button: {
         background: '#1A185B',
         color: 'white',
+        width: '20%',
+        height: '15%'
     },
     link: {
         textDecoration: 'none',
         color: '#1A185B',
+
+    },
+    error: {
+        color: 'red',
 
     },
     // fields: {
@@ -56,24 +61,33 @@ const useStyles = makeStyles({
 
 const Login = ({ values, errors, touched, status, setUser, history }) => {
     const classes= useStyles();
+    const [error, setError] = useState();
 
     useEffect(() => {
         if (status) {
+            if (Object.keys(status).includes('token')) { 
             setUser(status);
             history.push('/Home/Home');
-        }
+            } else {
+                setError("Incorrect username or password");
+                
+            }
+        
+        } 
     }, [status])
+    
     return (
         <div className={classes.wrapper}>
             <Form className={classes.form}>
                 <div className={classes.header}>
                     <h1>SleepTracker</h1>
                 </div>
+                <p className={classes.error}>{error}</p>
                 {/* <div className={classes.fields}> */}
-                {touched.username && errors.username && <p>Username required!</p>}
+                {touched.username && errors.username && <span>Username required!</span>}
                 <Field className={classes.inputs} type="text" name="username" placeholder="Username"/>
 
-                {touched.password && errors.password && <p>Password required!</p>}
+                {touched.password && errors.password && <span>Password required!</span>}
                 <Field className={classes.inputs} type="password" name="password" placeholder="Password" />
                 <Button variant="contained" className={classes.button} type="submit">Log In</Button>
 
@@ -95,7 +109,7 @@ validationSchema: Yup.object().shape({
     username: Yup.string().min(4).required(),
     password: Yup.string().min(6).required()
 }),
-handleSubmit: (values, { setStatus }) => {
+handleSubmit: (values, { setStatus } ) => {
     axios.post('https://get-sleeptracker.herokuapp.com/api/auth/login', values)
     .then(res => {
         let token = res.data.token;
@@ -108,6 +122,8 @@ handleSubmit: (values, { setStatus }) => {
             user: userName
         });
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        setStatus('Error')
+    })
 }
 })(Login);
