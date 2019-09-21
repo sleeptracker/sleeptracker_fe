@@ -39,27 +39,27 @@ function Clock(props) {
     return(
         <div className={classes.clockContainer}>
             <div className={classes.box}>
-                <KeyboardArrowUpIcon fontSize="large" />
+                <KeyboardArrowUpIcon fontSize="large" onClick={props.handleTime} />
                     <div className={classes.timeBox}>
                         <p>{props.hour}</p>
                     </div>
-                <KeyboardArrowDownIcon fontSize="large" />
+                <KeyboardArrowDownIcon fontSize="large" onClick={props.handleTime} />
             </div>
 
             <div className={classes.box}>
-                <KeyboardArrowUpIcon fontSize="large" />
+                <KeyboardArrowUpIcon fontSize="large" onClick={props.handleTime} />
                     <div className={classes.timeBox}>
                         <p>{props.minute}</p>
                     </div>
-                <KeyboardArrowDownIcon fontSize="large" />
+                <KeyboardArrowDownIcon fontSize="large" onClick={props.handleTime} />
             </div>
 
             <div className={classes.box}>
-                <KeyboardArrowUpIcon fontSize="large" />
+                <KeyboardArrowUpIcon fontSize="large" onClick={props.handleTime} />
                     <div className={classes.timeBox}>
                         <p>{props.hemisphere}</p>
                     </div>
-                <KeyboardArrowDownIcon fontSize="large" />
+                <KeyboardArrowDownIcon fontSize="large" onClick={props.handleTime} />
             </div>
         </div>
     )

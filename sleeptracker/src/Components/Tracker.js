@@ -34,7 +34,7 @@ if (isAmPm === 'true') {
 
 function Tracker(props) {
     const classes = useStyles();
-    const [hour, setHour] = useState(mnt.hour());
+    const [hour, setHour] = useState(mnt.format('h'));
     const [minute, setMinute] = useState(mnt.minute());
     const [hemisphere, setHemisphere] = useState(meridian);
 
@@ -49,6 +49,7 @@ function Tracker(props) {
             </div>
         </div>
     )
+
 }
 
 export default Tracker
