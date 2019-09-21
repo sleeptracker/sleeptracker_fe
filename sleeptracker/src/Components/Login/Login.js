@@ -60,7 +60,7 @@ const Login = ({ values, errors, touched, status, setUser, history }) => {
     useEffect(() => {
         if (status) {
             setUser(status);
-            history.push('/Home');
+            history.push('/Home/Home');
         }
     }, [status])
     return (
