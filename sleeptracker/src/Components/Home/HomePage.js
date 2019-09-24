@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect }  from 'react';
+import axios from 'axios';
 
 import Graph from './Graph';
 import { makeStyles } from '@material-ui/core';
@@ -24,10 +25,24 @@ const useStyles = makeStyles({
 
 const HomePage = (props) => {
     const classes = useStyles();
+    const [userData, setUserData] = useState([]);
+    useEffect(() => {
+        if(props.user.userId) {
+            axios.get(`https://sleeptrack.herokuapp.com/api/user/${props.user.userId}`, {
+                headers: {
+                    "authorize": props.user.token
+                }
+            })
+            .then(res => {
+                setUserData(res.data.sleepData)
+            })
+            .catch(err => console.log(err))
+        }
+    }, [props.user.userId])
     return (
         <div className={classes.wrapper} > 
             <div className={classes.graph} >
-            <Graph />
+            <Graph data={userData} />
             </div>
 
             <div>
