@@ -116,7 +116,6 @@ const NavBar = (props) => {
       })
         .then(res => {
           setCurrentUser(res.data.username);
-          console.log(res.data)
         })
         .catch(err => console.log(err))
       }
