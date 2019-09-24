@@ -9,7 +9,7 @@ import HomePage from './Components/Home/HomePage';
 
 function App() {
   const [user, setUser] = useState({});
-  console.log(user);
+  // console.log(user);
   return (
     <div className="App">
       <div>
