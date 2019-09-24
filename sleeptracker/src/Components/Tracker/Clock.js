@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { makeStyles } from '@material-ui/core';
 import KeyboardArrowUpIcon from '@material-ui/icons/ExpandLess';
 import KeyboardArrowDownIcon from '@material-ui/icons/ExpandMore';
@@ -16,7 +15,7 @@ const useStyles = makeStyles({
         boxShadow: '5px 5px 10px gray'
     },
     clockContainer: {
-        width: '650px',
+        width: '450px',
         height: '300px',
         display: 'flex',
         justifyContent: 'space-between',
@@ -34,7 +33,7 @@ function Clock(props) {
         <div className={classes.clockContainer}>
             <div className={classes.box}>
                 <div onClick={() => props.handleTime('up', 'hour')}>
-                    <KeyboardArrowUpIcon className="UpArrow" value="upArrow" fontSize="large" />
+                    <KeyboardArrowUpIcon fontSize="large" />
                 </div>
                 <div className={classes.timeBox}>
                     <p value="upArrow">{props.hour}</p>
@@ -51,17 +50,6 @@ function Clock(props) {
                     <p>{props.minute}</p>
                 </div>
                 <div onClick={() => props.handleTime('down', 'min')}>
-                    <KeyboardArrowDownIcon fontSize="large" />
-                </div>
-            </div>
-            <div className={classes.box}>
-                <div onClick={() => props.handleTime('up', 'meridian')}>
-                    <KeyboardArrowUpIcon fontSize="large" />
-                </div>
-                <div className={classes.timeBox}>
-                    <p>{props.hemisphere}</p>
-                </div>
-                <div onClick={() => props.handleTime('down', 'meridian')}>
                     <KeyboardArrowDownIcon fontSize="large" />
                 </div>
             </div>
