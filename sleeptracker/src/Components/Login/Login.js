@@ -110,16 +110,16 @@ validationSchema: Yup.object().shape({
     password: Yup.string().min(6).required()
 }),
 handleSubmit: (values, { setStatus } ) => {
-    axios.post('https://get-sleeptracker.herokuapp.com/api/auth/login', values)
+    axios.post('https://sleeptrack.herokuapp.com/api/login', values)
     .then(res => {
         let token = res.data.token;
-        const userName = res.data.user.username;
-        // console.log(userName)
-        // console.log(token);
+        const userId = res.data.id;
+        console.log(res.data)
+        // // console.log(token);
         localStorage.setItem("token", token)
         setStatus({
             token: token,
-            user: userName
+            userId: userId
         });
     })
     .catch(err => {
