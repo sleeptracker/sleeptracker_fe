@@ -69,17 +69,21 @@ const SignUp = ({values, errors, touched, status, setUser, history}) => {
                 {touched.username && errors.username && <p className={classes.warning}>Username required!</p>}
                 <Field  className={classes.inputs} type="text" name="username" placeholder="Username" />
 
-                {touched.email && errors.email && <p className={classes.warning}>Email required!</p>}
+                {/* {touched.email && errors.email && <p className={classes.warning}>Email required!</p>}
                 <Field  className={classes.inputs} type="text" name="email" placeholder="Email" />
 
                 {touched.firstName && errors.firstName && <p className={classes.warning}>First Name required!</p>}
                 <Field  className={classes.inputs} type="text" name="firstName" placeholder="First Name" />
 
                 {touched.lastName && errors.lastName && <p className={classes.warning}>Last Name required!</p>}
-                <Field  className={classes.inputs} type="text" name="lastName" placeholder="Last Name" />
+                <Field  className={classes.inputs} type="text" name="lastName" placeholder="Last Name" /> */}
 
                 {touched.password && errors.password && <p className={classes.warning}>Password required!</p>}
                 <Field  className={classes.inputs} type="password" name="password" placeholder="Password" />
+
+                {touched.birthdate && errors.birthdate && <p className={classes.warning}>Date of Birth required!</p>}
+                <Field className={classes.inputs} type="date" name="birthdate" />
+
 
                 </div>
                 
@@ -95,9 +99,7 @@ export default withFormik({
         return {
         username: props.username || "",
         password: props.password || "",
-        firstName: props.firstName || "",
-        lastName: props.lastName || "",
-        email: props.email || ""
+        birthdate: props.birthdate || ""
 
         }
 
@@ -105,23 +107,21 @@ export default withFormik({
     validationSchema: Yup.object().shape({
         username: Yup.string().min(4).required(),
         password: Yup.string().min(6).required(),
-        firstName: Yup.string().required(),
-        lastName: Yup.string().required(),
-        email: Yup.string().email().required()
+        birthdate: Yup.date().required()
     }),
     handleSubmit: (values, { setStatus }) => {
-        axios.post("https://get-sleeptracker.herokuapp.com/api/auth/register", values) 
+        axios.post("https://sleeptrack.herokuapp.com/api/register", values) 
         .then(res => {
             let token = res.data.token
-            let userName = res.data.user.username;
-            console.log(token)
+            let userId = res.data.id;
             localStorage.setItem("token", token)
             setStatus({
                 token: token,
-                user: userName
+                userId: userId
             })
         })
         .catch(err => console.log(err))
+        console.log(values)
     
     }
 })(SignUp);

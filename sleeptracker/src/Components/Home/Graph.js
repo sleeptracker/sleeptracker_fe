@@ -13,6 +13,7 @@ const useStyles = makeStyles({
 const Graph = (props) => {
 
     const classes = useStyles();
+
     return (
         <div className={classes.wrapper} > 
         <XYPlot
@@ -30,7 +31,7 @@ const Graph = (props) => {
             <HorizontalBarSeries data={[{y: 1, x: 1}, {y: 2, x: 2}, {y: 5, x: 4}]} />
           {/* <HorizontalBarSeries data={[{y: 2, x: 12}, {y: 4, x: 2}, {y: 5, x: 11}]} /> */}
                 {/* dummy data ^ */}
-            <XAxis title="Sleep Rating" />
+            <XAxis title="Average Rating" />
             <YAxis title="Hours of Sleep"/>
         </XYPlot>
     </div>

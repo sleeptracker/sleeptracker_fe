@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -88,8 +89,9 @@ const useStyles = makeStyles(theme => ({
 const NavBar = (props) => {
     const classes = useStyles();
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [open, setOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [currentUser, setCurrentUser] = useState("")
   
     function handleDrawerOpen() {
       setOpen(true);
@@ -106,6 +108,19 @@ const NavBar = (props) => {
       props.setUser({});
       props.history.push('/');
     }
+
+    useEffect(() => {
+      if (props.user.userId) {
+        axios.get(`https://sleeptrack.herokuapp.com/api/user/${props.user.userId}`, {
+        headers: {"authorize" : props.user.token}
+      })
+        .then(res => {
+          setCurrentUser(res.data.username);
+          console.log(res.data)
+        })
+        .catch(err => console.log(err))
+      }
+    }, [props.user.userId])
 
     return (
         <div className={classes.root}>
@@ -139,7 +154,7 @@ const NavBar = (props) => {
               >
                 <AccountCircle />
                 <Typography variant="h6" noWrap>
-                   {props.user.user}
+                   {currentUser}
                 </Typography>
               </IconButton>
             </div>
@@ -167,8 +182,8 @@ const NavBar = (props) => {
                     </ListItem>
                   </Link>
                 {['Tracker', 'History'].map((text, index) => (
-                  <Link to={`/Home/${text}`} className={classes.link}>
-                    <ListItem button key={text}>
+                  <Link  to={`/Home/${text}`} className={classes.link}>
+                    <ListItem button key={index}>
                     <ListItemText primary={text} />
                     
                     </ListItem>
