@@ -31,6 +31,15 @@ function Tracker(props) {
     const [mnt, setMnt] = useState(moment());
     const [hour, setHour] = useState(mnt.hour());
     const [minute, setMinute] = useState(mnt.minute());
+    const [sleepData, setSleepData] = useState({
+        userID: props.user.userId,
+        start: "",
+        end: "",
+        hours: "",
+        bed_t_rating: "",
+        work_t_rating: "",
+        average_rating: ""
+    });
     const handleTime = (dir, time) => {
         if (dir === 'up') {
             time === 'hour' ? setHour(mnt.add(1, 'hour').hour()) : setMinute(mnt.add(1, 'minute').minute());
@@ -40,7 +49,31 @@ function Tracker(props) {
     }
 
     const handleSubmitTime = () => {
-        console.log(hour, minute)
+        const currentMnt = mnt.format("YYYY-MM-DD HH:mm")
+
+        setSleepData({
+            "userID": 118,
+            "start": currentMnt,
+            "end": currentMnt,
+            "hours": 11,
+            "bed_t_rating": "4",
+            "work_t_rating": "4",
+            "average_rating": "5"
+        })
+
+        console.log(currentMnt)
+        axios.post('https://sleeptrack.herokuapp.com/api/sleepData', sleepData, {
+            headers: {
+                "authorize": props.user.token
+            }})
+            .then(res => {
+                console.log(res)
+                
+            })
+            .catch(err => {
+                console.log(err)
+                // window.alert("Form unable to submit, please try again.")
+            })
     }
 
     const setCurrentTime = () => {
@@ -51,26 +84,16 @@ function Tracker(props) {
     
 
     useEffect(() => {
-        axios.get(`https://sleeptrack.herokuapp.com/api/user/${props.user.userId}`)
+        axios.get(`https://sleeptrack.herokuapp.com/api/user/${props.user.userId}`, {headers: {"authorize": props.user.token}})
             .then(res => {
-                console.log(res);
+                const sleepDataArray = res.data.sleepData;
+                console.log(sleepDataArray);
             })
             .catch(err => {
                 console.log(err);
                 // window.alert("Ann error occured!")
             })
     }, [])
-
-    // useEffect(() => {
-    //     axios.post('https://sleeptrack.herokuapp.com/api/sleepData')
-    //         .then(res => {
-    //             console.log(res)
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
-    //             // window.alert("Form unable to submit, please try again.")
-    //         })
-    // }, [handleSubmitTime])
 
     return (
         <div className={classes.container}>

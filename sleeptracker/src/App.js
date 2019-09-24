@@ -10,11 +10,7 @@ import HomePage from './Components/Home/HomePage';
 
 function App() {
   const [user, setUser] = useState({});
-<<<<<<< HEAD
-  // console.log(user);
-=======
 
->>>>>>> f66f41be65d7c6470de69d0ffa2c18400e8ce59c
   return (
     <div className="App">
       <div>
