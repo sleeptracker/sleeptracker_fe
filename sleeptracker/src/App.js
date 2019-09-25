@@ -9,11 +9,7 @@ import HomePage from './Components/Home/HomePage';
 
 
 function App() {
-  const [user, setUser] = useState({
-    userId: 120,
-    token:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIwLCJ1c2VybmFtZSI6ImV4YW1wbGUiLCJyb2xlIjoidXNlciIsImlhdCI6MTU2OTM3MDc0NiwiZXhwIjoxNTY5NDU3MTQ2fQ.ilE5k1iM5OTpzY-NXcpuctEBvod2Q72BUI2Cz8ZmOYY"
-    });
+  const [user, setUser] = useState({});
   return (
     <div className="App">
       <div>
