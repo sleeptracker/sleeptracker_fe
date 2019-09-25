@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
+import moment from 'moment';
 import { Bar } from 'react-chartjs-2';
 
 const useStyles = makeStyles({
@@ -13,7 +14,7 @@ const Graph = (props) => {
     const classes = useStyles();
 
 const chartData = {
-    labels: props.data.map(cur => cur.start),
+    labels: props.data.map(cur => moment(cur.start, "YYYY-MM-D HH:mm:ss ZZ").format("MMM/DD/YYYY")),
     datasets: [
         {
         label: 'Hours of Sleep',
@@ -36,7 +37,7 @@ const chartData = {
         options={{
             title: {
                 display: true,
-                text: 'Recent Sleep Times'
+                text: 'Hours of Sleep Over Time'
             },
             scales : {
                 yAxes: [{
