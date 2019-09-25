@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
-import {XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalBarSeries, VerticalGridLines, HorizontalBarSeries} from 'react-vis';
-
+import { Bar } from 'react-chartjs-2';
 
 const useStyles = makeStyles({
     wrapper: {
@@ -11,51 +10,46 @@ const useStyles = makeStyles({
 
 
 const Graph = (props) => {
-
     const classes = useStyles();
-   const graphData = props.data.map(cur => {
-       return {
-           x: parseInt(cur.average_rating),
-           y: cur.hours
-       }
-   })
-   const compare = (a, b) => {
-       const numA = a.y
-       const numB = b.y
 
-       let comparison = 0;
+const chartData = {
+    labels: props.data.map(cur => cur.start),
+    datasets: [
+        {
+        label: 'Hours of Sleep',
+        data: props.data.map(cur => cur.hours),
+        backgroundColor: 
+            '#1A185B'
+        }
+    ]
+    
+}
 
-       if (numA > numB) {
-           comparison = 1;
-       } else if (numB > numA) {
-           comparison = -1;
-       }
-       return comparison;
-   }
-   console.log(graphData.sort(compare))
-
-    // started charting data... need to visualize it better, maybe pick different graph ?
     return (
         <div className={classes.wrapper} > 
-        <XYPlot
-            width={500}
-            height={500}>
-            <HorizontalGridLines />
-            <VerticalGridLines />
+
+
+        <Bar 
+        data={chartData} 
+        width={500}
+        height={500}
+        options={{
+            title: {
+                display: true,
+                text: 'Recent Sleep Times'
+            },
+            scales : {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            maintainAspectRatio: false
             
-            {/* <VerticalBarSeries
-                color="red"
-                data={[
-                {x: 1, y: 10},
-                {x: 2, y: 5},
-                {x: 3, y: 15}
-                ]}/> */}
-            <HorizontalBarSeries data={graphData.sort(compare)} />
-          {/* <HorizontalBarSeries data={[{y: 2, x: 12}, {y: 4, x: 2}, {y: 5, x: 11}]} /> */}
-                {/* dummy data ^ */}
-            <XAxis title="Average Rating" />
-            <YAxis title=" Hours of Sleep"/>
-        </XYPlot>
+            
+            }} />
+
     </div>
 
     )
