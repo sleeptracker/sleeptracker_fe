@@ -10,7 +10,6 @@ import HomePage from './Components/Home/HomePage';
 
 function App() {
   const [user, setUser] = useState({});
-
   return (
     <div className="App">
       <div>
