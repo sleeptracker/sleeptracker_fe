@@ -39,16 +39,7 @@ function Tracker(props) {
     const [nightMnt, setNightMnt] = useState(moment())
     const [nightHour, setNightHour] = useState(morningMnt.hour());
     const [nightMinute, setNightMinute] = useState(morningMnt.minute());
-    const [sleepData, setSleepData] = useState({
-        userID: "",
-        start: "",
-        end: "",
-        hours: "",
-        bed_t_rating: "",
-        work_t_rating: "",
-        average_rating: ""
-    });
-
+   
     const handleTime = (dir, time, day) => {
         if (day === 'morning') {
             if (dir === 'up') {
@@ -68,7 +59,7 @@ function Tracker(props) {
     const handleRating = (rate) => {
         setRating(rate)
     }
-
+    
     const handleSubmitTime = () => {
         const currentMorningMnt = morningMnt.format("YYYY-MM-DD HH:mm")
         const currentNightMnt = nightMnt.format("YYYY-MM-DD HH:mm")
@@ -80,20 +71,15 @@ function Tracker(props) {
         if (rating === 0) {
             window.alert('Please choose a rating!')
         } else if (rating >= 1) {
-            console.log(currentMorningMnt)
-            console.log(currentNightMnt)
-            console.log(rating)
-            setSleepData({
-                userID: props.user.userId,
-                start: currentMorningMnt,
-                end: currentNightMnt,
-                hours: hours,
-                bed_t_rating: "4",
-                work_t_rating: "4",
-                average_rating: rating
-            })
-            
-            axios.post('https://sleeptrack.herokuapp.com/api/sleepData', sleepData, {
+            axios.post('https://sleeptrack.herokuapp.com/api/sleepData', {
+                "userID":` ${props.user.userId}`,
+                "start": `${morningMnt.format("YYYY-MM-DD HH:mm")}`,
+                "end": `${nightMnt.format("YYYY-MM-DD HH:mm")}`,
+                "hours":  hours,
+                "bed_t_rating": "4",
+                "work_t_rating": "4",
+                "average_rating": `${rating}`
+            }, {
                 headers: {
                     "authorize": props.user.token
                 }})
@@ -103,7 +89,6 @@ function Tracker(props) {
                 })
                 .catch(err => {
                     console.log(err)
-                    console.log(sleepData)
                 })
         }
     }
