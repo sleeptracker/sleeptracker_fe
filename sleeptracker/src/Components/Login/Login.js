@@ -115,7 +115,6 @@ handleSubmit: (values, { setStatus } ) => {
         let token = res.data.token;
         const userId = res.data.id;
         console.log(res.data)
-        // // console.log(token);
         localStorage.setItem("token", token)
         setStatus({
             token: token,
