@@ -32,6 +32,7 @@ const useStyles = makeStyles({
 
 function Tracker(props) {
     const classes = useStyles();
+    const [rating, setRating] = useState(0);
     const [morningMnt, setMorningMnt] = useState(moment());
     const [morningHour, setMorningHour] = useState(morningMnt.hour());
     const [morningMinute, setMorningMinute] = useState(morningMnt.minute());
@@ -39,7 +40,7 @@ function Tracker(props) {
     const [nightHour, setNightHour] = useState(morningMnt.hour());
     const [nightMinute, setNightMinute] = useState(morningMnt.minute());
     const [sleepData, setSleepData] = useState({
-        userID: props.user.userId,
+        userID: "",
         start: "",
         end: "",
         hours: "",
@@ -64,35 +65,47 @@ function Tracker(props) {
         }
     }
 
+    const handleRating = (rate) => {
+        setRating(rate)
+    }
+
     const handleSubmitTime = () => {
-        const currentMormingMnt = morningMnt.format("YYYY-MM-DD HH:mm")
+        const currentMorningMnt = morningMnt.format("YYYY-MM-DD HH:mm")
         const currentNightMnt = nightMnt.format("YYYY-MM-DD HH:mm")
 
-        setSleepData({
-            "userID": 118,
-            "start": currentMormingMnt,
-            "end": currentNightMnt,
-            "hours": 11,
-            "bed_t_rating": "4",
-            "work_t_rating": "4",
-            "average_rating": "5"
-        })
+        let hours = morningMnt.diff(nightMnt, 'hours')
 
-        console.log(currentMormingMnt)
-        axios.post('https://sleeptrack.herokuapp.com/api/sleepData', sleepData, {
-            headers: {
-                "authorize": props.user.token
-            }})
-            .then(res => {
-                console.log(res)
-                
+        console.log(hours)
+
+        if (rating === 0) {
+            window.alert('Please choose a rating!')
+        } else if (rating >= 1) {
+            console.log(currentMorningMnt)
+            console.log(currentNightMnt)
+            console.log(rating)
+            setSleepData({
+                userID: props.user.userId,
+                start: currentMorningMnt,
+                end: currentNightMnt,
+                hours: hours,
+                bed_t_rating: "4",
+                work_t_rating: "4",
+                average_rating: rating
             })
-            .catch(err => {
-                console.log(err)
-                // window.alert("Form unable to submit, please try again.")
-            })
-        
-        window.alert("Your time has been submitted!")
+            
+            axios.post('https://sleeptrack.herokuapp.com/api/sleepData', sleepData, {
+                headers: {
+                    "authorize": props.user.token
+                }})
+                .then(res => {
+                    console.log(res)
+                    window.alert("Your time has been submitted!")
+                })
+                .catch(err => {
+                    console.log(err)
+                    console.log(sleepData)
+                })
+        }
     }
 
     const setCurrentTime = () => {
@@ -123,13 +136,11 @@ function Tracker(props) {
                 <div>
                     <Clock handleTime={handleTime} hour={nightHour} minute={nightMinute} day='night' which='Night' />
                     <Clock handleTime={handleTime} hour={morningHour} minute={morningMinute} day='morning' which='Morning' />
-                </div>
-                <div>
-                    <Rating />
+                    <Rating handleRating={handleRating} rating={rating} />
                 </div>
                 <div className={classes.formButtons}>
                     <button className={classes.button} onClick={handleSubmitTime} >Submit</button>
-                    <button className={classes.button} onClick={setCurrentTime}>Current Time</button>
+                    <button className={classes.button} onClick={setCurrentTime} >Current Time</button>
                 </div>
             </div>
         </div>
