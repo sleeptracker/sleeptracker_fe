@@ -114,6 +114,16 @@ const HomePage = (props) => {
         setEditOpen(true);
         setId(id)
     }
+
+    const handleSubmit = (id) => {
+        axios.put(`https://sleeptrack.herokuapp.com/api/sleepData/${id}`, {
+            headers: {
+                "authorize": props.user.token
+            }
+        })
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+    }
     useEffect(() => {
         if(props.user.userId) {
             axios.get(`https://sleeptrack.herokuapp.com/api/user/${props.user.userId}`, {
@@ -191,14 +201,14 @@ const HomePage = (props) => {
                     <TextField
                         id="average_rating"
                         select
-                        label="Average rating"
+                        label=""
                         className={classes.textField}
                         value={values}
                         onChange={(e) => setValues(e.target.value)}
                         SelectProps={{
                         native: true,
                         }}
-                        margin="normal"
+                        // margin="normal"
                         >
                         {[1, 2, 3, 4].map(option => (
                         <option key={option} value={option}>
@@ -232,7 +242,7 @@ const HomePage = (props) => {
                     <Button onClick={() => handleClose('edit')} color="secondary">
                         Cancel
                     </Button>
-                    <Button onClick={() => handleClose('edit')} color="primary">
+                    <Button onClick={() => handleSubmit(itemId)} color="primary">
                         Submit
                     </Button>
                     </DialogActions>
