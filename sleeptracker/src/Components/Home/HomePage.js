@@ -9,6 +9,12 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
 
 import moment from 'moment';
 
@@ -54,6 +60,16 @@ const useStyles = makeStyles({
         flexFlow: 'column warp',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    edit: {
+        display: 'flex',
+        flexFlow: 'column wrap',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    field: {
+        marginBottom: '20px',
+
     }
 
 })
@@ -62,6 +78,42 @@ const useStyles = makeStyles({
 const HomePage = (props) => {
     const classes = useStyles();
     const [graphData, setGraphData] = useState([]);
+    const [itemId, setId] = useState()
+    const [deleted, setDeleted] = useState(false)
+
+    const [editOpen, setEditOpen] = useState(false)
+    const [deleteOpen, setDeleteOpen] = useState(false);
+
+    const [values, setValues] = useState("")
+
+
+    const handleClickOpen = (id) => {
+      setDeleteOpen(true);
+      setId(id)
+    };
+  
+    const handleClose = (type) => {
+      type === 'edit' ? setEditOpen(false) : setDeleteOpen(false)
+    };
+
+    const deleteItem = (id) => {
+        axios.delete(`https://sleeptrack.herokuapp.com/api/sleepData/${id}`, {
+            headers: {
+                "authorize": props.user.token
+            }
+        })
+        .then(res => {
+            console.log(res)
+            setDeleted(!deleted)
+            setId("")
+            handleClose();
+        })
+        .catch(err => console.log(err))
+    }
+    const handleEdit = (id) => {
+        setEditOpen(true);
+        setId(id)
+    }
     useEffect(() => {
         if(props.user.userId) {
             axios.get(`https://sleeptrack.herokuapp.com/api/user/${props.user.userId}`, {
@@ -74,7 +126,7 @@ const HomePage = (props) => {
             })
             .catch(err => console.log(err))
         }
-    }, [props.user.userId])
+    }, [props.user.userId, deleted])
 
     return (
         <div className={classes.wrapper} > 
@@ -92,23 +144,99 @@ const HomePage = (props) => {
                                 {moment(cur.start, "YYYY-MM-D HH:mm:ss ZZ").format('MMM/DD/YYYY')}
                             </Typography>
                             <Typography variant="body1"  component="p" className={classes.bodyCard}>
-                                Average Rating: {cur.average_rating} <br />
+                                Rating: {cur.average_rating} <br />
                                 End Time: {moment(cur.end, "YYYY-MM-D HH:mm:ss ZZ").format('MMM/DD/YYYY H:mm')} <br />
                                 Hours of Sleep: {cur.hours}
                             </Typography>
                         </CardContent>
                         </CardActionArea>
                         <CardActions className={classes.buttons}>
-                        <Button size="small" color="primary">
+                        <Button size="small" color="primary"  onClick={() => handleEdit(cur.id)}>
                             Edit
                         </Button>
-                        <Button size="small" className={classes.delete}>
+                        <Button size="small" className={classes.delete} onClick={() => handleClickOpen(cur.id)}>
                             Delete
                         </Button>
                         </CardActions>
                   </Card>
+
                 )
             })}
+                <Dialog
+                    open={deleteOpen}
+                    onClose={() => handleClose('delete')}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Delete selected item?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure you want to Delete? 
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => handleClose('delete')} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={() => deleteItem(itemId)} className={classes.delete} autoFocus>
+                            Delete
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+                <Dialog open={editOpen} onClose={() => handleClose('edit')} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Edit</DialogTitle>
+                    <DialogContent className={classes.edit}>
+                    <Typography variant="h6" component="h3">Rating</Typography>
+                    <TextField
+                        id="average_rating"
+                        select
+                        label="Average rating"
+                        className={classes.textField}
+                        value={values}
+                        onChange={(e) => setValues(e.target.value)}
+                        SelectProps={{
+                        native: true,
+                        }}
+                        margin="normal"
+                        >
+                        {[1, 2, 3, 4].map(option => (
+                        <option key={option} value={option}>
+                            {option}
+                        </option>
+                        ))}
+                    </TextField>
+                     <Typography variant="h6" component="h3">Start Time</Typography>
+                    <TextField
+                        id="start"
+                        type="time"
+                        className={classes.field}
+                    />
+                     <Typography variant="h6" component="h3">End Time</Typography>
+                    <TextField
+                        id="end"
+                        type="time"
+                        className={classes.field}
+                    />
+                     <Typography variant="h6" component="h3">Hours</Typography>
+                    <TextField
+                        id="hours"
+                        label="Hours"
+                        type="number"
+                        className={classes.field}
+                    />
+                    {/* maybe add this to a formik component ??? may help with submitting... */}
+
+                    </DialogContent>
+                    <DialogActions>
+                    <Button onClick={() => handleClose('edit')} color="secondary">
+                        Cancel
+                    </Button>
+                    <Button onClick={() => handleClose('edit')} color="primary">
+                        Submit
+                    </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         </div>
     )
