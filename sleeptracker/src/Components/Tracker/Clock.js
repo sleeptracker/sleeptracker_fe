@@ -9,14 +9,14 @@ const useStyles = makeStyles({
         alignItems: 'center',
         width: '200px',
         height: '100px',
-        color: '#00ff00',
-        backgroundColor: 'black',
+        color: 'white',
+        backgroundColor: '#1A185B',
         fontSize: '30px',
         boxShadow: '5px 5px 10px gray'
     },
     mainContainer: {
         display: 'flex',
-        alignItems: 'center'
+        flexDirection: 'column'
     },
     clockContainer: {
         width: '450px',
@@ -33,10 +33,11 @@ const useStyles = makeStyles({
     header: {
         display: 'flex',
         alignItems: 'center',
-        borderRight: '4px solid #00ff00',
-        height: '50px',
+        borderBottom: '4px solid gray',
         marginRight: '25px',
-        paddingRight: '15px'
+        paddingRight: '15px',
+        width: '100%',
+        fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
     }
 })
 function Clock(props) {
@@ -46,6 +47,7 @@ function Clock(props) {
             <div className={classes.mainContainer}>
                 <h2 className={classes.header}>{props.which}</h2>
                 <div className={classes.clockContainer}>
+
                     <div className={classes.box}>
                         <div onClick={() => props.handleTime('up', 'hour', props.day)}>
                             <KeyboardArrowUpIcon fontSize="large" />
@@ -57,6 +59,7 @@ function Clock(props) {
                             <KeyboardArrowDownIcon fontSize="large" />
                         </div>
                     </div>
+
                     <div className={classes.box}>
                         <div onClick={() => props.handleTime('up', 'min', props.day)}>
                             <KeyboardArrowUpIcon fontSize="large" />
@@ -68,6 +71,7 @@ function Clock(props) {
                             <KeyboardArrowDownIcon fontSize="large" />
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
