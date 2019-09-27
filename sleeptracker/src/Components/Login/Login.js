@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from 'axios';
 
+import Card from '@material-ui/core/Card';
+
 
 const useStyles = makeStyles({
     wrapper: {
@@ -14,6 +16,8 @@ const useStyles = makeStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        background: `linear-gradient(rgba(24, 26, 91, 0.5), rgba(0, 0, 0, 0.6)),  url(${"https://images.unsplash.com/photo-1528353518104-dbd48bee7bc4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80"}) no-repeat center center fixed`,
+        backgroundSize: 'cover',
 
     },
     form: {
@@ -21,7 +25,7 @@ const useStyles = makeStyles({
         display: 'flex',
         flexFlow: 'column nowrap',
         alignItems: 'center',
-        border: '2px solid black',
+        // border: '2px solid black',
     },  
     header: {
         color: '#F7FA78',
@@ -30,15 +34,15 @@ const useStyles = makeStyles({
 
     },
     inputs: {
-        width: '35%',
+        width: '50%',
         textAlign: 'center',
         margin: '20px',
         padding: '10px 0 10px 0',
     },
     button: {
         background: '#1A185B',
-        color: 'white',
-        width: '20%',
+        color: '#F7FA78',
+        padding: '5px 15px 5px 15px',
         height: '15%'
     },
     link: {
@@ -50,6 +54,14 @@ const useStyles = makeStyles({
         color: 'red',
 
     },
+    card: {
+        maxWidth: 600,
+        width: 600,
+        display: 'flex',
+        flexFlow: 'column wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
     // fields: {
     //     width: '80%',
     //     display: 'flex',
@@ -78,10 +90,11 @@ const Login = ({ values, errors, touched, status, setUser, history }) => {
     
     return (
         <div className={classes.wrapper}>
-            <Form className={classes.form}>
-                <div className={classes.header}>
+        <Card className={classes.card}>
+        <div className={classes.header}>
                     <h1>SleepTracker</h1>
                 </div>
+            <Form className={classes.form}>
                 <p className={classes.error}>{error}</p>
                 {/* <div className={classes.fields}> */}
                 {touched.username && errors.username && <span>Username required!</span>}
@@ -89,11 +102,13 @@ const Login = ({ values, errors, touched, status, setUser, history }) => {
 
                 {touched.password && errors.password && <span>Password required!</span>}
                 <Field className={classes.inputs} type="password" name="password" placeholder="Password" />
+                <div className={classes.button}>
                 <Button variant="contained" className={classes.button} type="submit">Log In</Button>
-
+                </div>
                 <p>Don't have an account ? <Link to="/SignUp" className={classes.link}>Sign Up!</Link></p>
                 {/* </div> */}
             </Form>
+            </Card>
         </div>
     )
 }

@@ -4,6 +4,11 @@ import { makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
+import Card from '@material-ui/core/Card';
 
 const useStyles = makeStyles({
     wrapper: {
@@ -12,16 +17,16 @@ const useStyles = makeStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-
+        background: `linear-gradient(rgba(24, 26, 91, 0.5), rgba(0, 0, 0, 0.6)),  url(${"https://images.unsplash.com/photo-1528353518104-dbd48bee7bc4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80"}) no-repeat center center fixed`,
+        backgroundSize: 'cover',
     },
     form: {
         width: '50%',
-        height: '60%',
         display: 'flex',
         flexFlow: 'column wrap',
         alignItems: 'center',
         justifyContent: 'center',
-        border: '2px solid black',
+        // border: '2px solid black',
     },  
     header: {
         color: '#F7FA78',
@@ -33,20 +38,40 @@ const useStyles = makeStyles({
     inputs: {
         width: '50%',
         textAlign: 'center',
-        margin: '20px',
-        padding: '10px 0 10px 0',
-    },
-    button: {
-        background: '#1A185B',
-        color: 'white',
-    },
+            margin: '20px',
+            padding: '10px 0 10px 0',
+        },
+        button: {
+            background: '#1A185B',
+            color: 'white',
+            marginBottom: '20px',
+        },
     fields: {
-        width: '50%',
+        width: '100%',
         display: 'flex',
         flexFlow: 'row wrap',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    card: {
+        maxWidth: 600,
+        width: 600,
+        display: 'flex',
+        flexFlow: 'column wrap',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    link: {
+        color: 'black',
+        
+    },
+    linkDiv: {
+        display: 'flex',
+        flexFlow:'row wrap',
+        alignItems: 'center',
+        justifyContent:'center',
     }
+    
 })
 
 
@@ -59,36 +84,36 @@ const SignUp = ({values, errors, touched, status, setUser, history}) => {
             history.push('/Home/Home');
         }
     }, [status])
+
     return (
         <div className={classes.wrapper}>
-            <Form className={classes.form} >
-                <div className={classes.header}>
+            <Card className={classes.card}>
+            <div className={classes.header}>
                     <h1>SleepTracker</h1>
                 </div>
-                <div className={classes.fields}>
-                {touched.username && errors.username && <p className={classes.warning}>Username required!</p>}
-                <Field  className={classes.inputs} type="text" name="username" placeholder="Username" />
 
-                {/* {touched.email && errors.email && <p className={classes.warning}>Email required!</p>}
-                <Field  className={classes.inputs} type="text" name="email" placeholder="Email" />
-
-                {touched.firstName && errors.firstName && <p className={classes.warning}>First Name required!</p>}
-                <Field  className={classes.inputs} type="text" name="firstName" placeholder="First Name" />
-
-                {touched.lastName && errors.lastName && <p className={classes.warning}>Last Name required!</p>}
-                <Field  className={classes.inputs} type="text" name="lastName" placeholder="Last Name" /> */}
-
-                {touched.password && errors.password && <p className={classes.warning}>Password required!</p>}
-                <Field  className={classes.inputs} type="password" name="password" placeholder="Password" />
-
-                {touched.birthdate && errors.birthdate && <p className={classes.warning}>Date of Birth required!</p>}
-                <Field className={classes.inputs} type="date" name="birthdate" />
-
-
-                </div>
+                <Form className={classes.form} >               
                 
-                <Button className={classes.button} variant="contained" type="submit">Sign Up</Button>
-            </Form>
+                    <div className={classes.fields}>
+                        {touched.username && errors.username && <p className={classes.warning}>Username required!</p>}
+                        <Field  className={classes.inputs} type="text" name="username" placeholder="Username" />
+
+                        {touched.password && errors.password && <p className={classes.warning}>Password required!</p>}
+                        <Field  className={classes.inputs} type="password" name="password" placeholder="Password" />
+
+                        {touched.birthdate && errors.birthdate && <p className={classes.warning}>Date of Birth required!</p>}
+                        <Field className={classes.inputs} type="date" name="birthdate" />
+                    </div>
+                    
+                    <div className={classes.bottom}>
+                        <Button className={classes.button} variant="contained" type="submit">Sign Up</Button>
+                    </div>
+                </Form>
+                <div className={classes.linkDiv}>
+                    <ArrowBackIcon fontSize="small"/>
+                    <Link to="/" className={classes.link}>Back to Login</Link>
+                </div>
+            </Card>
             
         </div>
     )
