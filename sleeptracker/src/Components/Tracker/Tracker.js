@@ -14,9 +14,15 @@ const useStyles = makeStyles({
         height: '1000px',
         margin: '0 auto'
     },
+    clockContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
     clock: {
         position: 'absolute',
-        top: '30%',
+        top: '10%',
+        width: '60%',
         margin: '0 auto'
     },
     formButtons: {
@@ -30,6 +36,7 @@ const useStyles = makeStyles({
     }
 })
 
+
 function Tracker(props) {
     const classes = useStyles();
     const [rating, setRating] = useState(0);
@@ -39,7 +46,9 @@ function Tracker(props) {
     const [nightMnt, setNightMnt] = useState(moment())
     const [nightHour, setNightHour] = useState(morningMnt.hour());
     const [nightMinute, setNightMinute] = useState(morningMnt.minute());
+    const [average, setAverage] = useState();
    
+
     const handleTime = (dir, time, day) => {
         if (day === 'morning') {
             if (dir === 'up') {
@@ -56,17 +65,14 @@ function Tracker(props) {
         }
     }
 
+
     const handleRating = (rate) => {
         setRating(rate)
     }
     
+
     const handleSubmitTime = () => {
-        const currentMorningMnt = morningMnt.format("YYYY-MM-DD HH:mm")
-        const currentNightMnt = nightMnt.format("YYYY-MM-DD HH:mm")
-
         let hours = morningMnt.diff(nightMnt, 'hours')
-
-        console.log(hours)
 
         if (rating === 0) {
             window.alert('Please choose a rating!')
@@ -93,13 +99,12 @@ function Tracker(props) {
         }
     }
 
+
+
     const setCurrentTime = () => {
         setMorningMnt(moment())
         setMorningHour(moment().hour())
         setMorningMinute(moment().minute())
-        setNightMnt(moment())
-        setNightHour(moment().hour())
-        setNightMinute(moment().minute())
     }
     
 
@@ -107,25 +112,35 @@ function Tracker(props) {
         axios.get(`https://sleeptrack.herokuapp.com/api/user/${props.user.userId}`, {headers: {"authorize": props.user.token}})
             .then(res => {
                 const sleepDataArray = res.data.sleepData;
-                console.log(sleepDataArray);
+
+                let allRatingsObj = sleepDataArray.filter(rating => {
+                    return rating.average_rating == 4
+                })
+
+                let n = allRatingsObj.reduce((total, cur) => {
+                    return total.hours + cur.hours
+                }) / allRatingsObj.length
+                
+                window.alert(`You feel best when you get ${n} hours of sleep!`)
+
             })
             .catch(err => {
                 console.log(err);
-                // window.alert("Ann error occured!")
             })
     }, [])
+
 
     return (
         <div className={classes.container}>
             <div className={classes.clock}>
-                <div>
-                    <Clock handleTime={handleTime} hour={nightHour} minute={nightMinute} day='night' which='Night' />
-                    <Clock handleTime={handleTime} hour={morningHour} minute={morningMinute} day='morning' which='Morning' />
-                    <Rating handleRating={handleRating} rating={rating} />
+                <div className={classes.clockContainer}>
+                    <Clock handleTime={handleTime} hour={nightHour} minute={nightMinute} day='night' which='What time did you fall asleep?' />
+                    <Clock handleTime={handleTime} hour={morningHour} minute={morningMinute} day='morning' which='What time did you wake up?' />
+                    <button className={classes.button} onClick={setCurrentTime} >Current Time</button>
+                    <Rating handleRating={handleRating} rating={rating} description='How did you feel when you woke up?' />
                 </div>
                 <div className={classes.formButtons}>
                     <button className={classes.button} onClick={handleSubmitTime} >Submit</button>
-                    <button className={classes.button} onClick={setCurrentTime} >Current Time</button>
                 </div>
             </div>
         </div>
