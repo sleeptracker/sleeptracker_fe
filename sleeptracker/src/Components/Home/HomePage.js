@@ -84,8 +84,48 @@ const HomePage = (props) => {
     const [editOpen, setEditOpen] = useState(false)
     const [deleteOpen, setDeleteOpen] = useState(false);
 
-    const [values, setValues] = useState("")
+    const [form, setForm] = useState({
+        userID: props.user.userId,
+        start: "",
+        end: "",
+        hours: "",
+        bed_t_rating: "4",
+        work_t_rating: "4",
+        average_rating: "1"
 
+    })
+    const [start, setStart] = useState();
+    const [end, setEnd] = useState();
+
+    
+    const handleChange = (e) => {
+        if (start && end) {
+        let startTime = start.split(" ")   
+        let endTime= end.split(" ");
+        
+        if (e.target.name != 'start' && e.target.name != 'end' && e.target.name != 'hours'){
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        })
+        } else if (e.target.name === 'start') {
+            setForm({
+                ...form,
+                start: `${startTime[0]} ${e.target.value}`
+            })
+        } else if (e.target.name === 'end') {
+            setForm({
+                ...form,
+                end: `${endTime[0]} ${e.target.value}`
+            })
+        } else {
+            setForm({
+                ...form,
+                hours: parseInt(e.target.value)
+            })
+        }
+        }
+    }
 
     const handleClickOpen = (id) => {
       setDeleteOpen(true);
@@ -93,7 +133,23 @@ const HomePage = (props) => {
     };
   
     const handleClose = (type) => {
-      type === 'edit' ? setEditOpen(false) : setDeleteOpen(false)
+      if (type === 'edit') {
+         setEditOpen(false) 
+         setForm({
+            id: itemId,
+            userID: props.user.userId,
+            start: "",
+            end: "",
+            hours: "",
+            bed_t_rating: "4",
+            work_t_rating: "4",
+            average_rating: ""
+            
+        }) 
+        setId("");
+         } else {
+            setDeleteOpen(false)
+         }
     };
 
     const deleteItem = (id) => {
@@ -110,19 +166,44 @@ const HomePage = (props) => {
         })
         .catch(err => console.log(err))
     }
-    const handleEdit = (id) => {
+    const handleEdit = (item) => {
+        setStart(item.start)
+        setEnd(item.end)
+        setId(item.id)
         setEditOpen(true);
-        setId(id)
     }
-
     const handleSubmit = (id) => {
-        axios.put(`https://sleeptrack.herokuapp.com/api/sleepData/${id}`, {
-            headers: {
-                "authorize": props.user.token
-            }
+        if (id) {
+        setForm({
+            ...form,
+            id: id
         })
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+        console.log(form)
+            axios.put(`https://sleeptrack.herokuapp.com/api/sleepData/${id}`, form, {
+                headers: {
+                    "authorize": props.user.token
+                }
+            })
+            .then(res => {
+                console.log(res)
+                setDeleted(!deleted)
+                handleClose('edit')
+            })
+            .catch(err => console.log(err))
+
+
+
+        } else {
+            console.log('no id')
+        }
+        
+        // axios.put(`https://sleeptrack.herokuapp.com/api/sleepData/${id}`, {
+        //     headers: {
+        //         "authorize": props.user.token
+        //     }
+        // })
+        // .then(res => console.log(res))
+        // .catch(err => console.log(err))
     }
     useEffect(() => {
         if(props.user.userId) {
@@ -161,7 +242,7 @@ const HomePage = (props) => {
                         </CardContent>
                         </CardActionArea>
                         <CardActions className={classes.buttons}>
-                        <Button size="small" color="primary"  onClick={() => handleEdit(cur.id)}>
+                        <Button size="small" color="primary"  onClick={() => handleEdit(cur)}>
                             Edit
                         </Button>
                         <Button size="small" className={classes.delete} onClick={() => handleClickOpen(cur.id)}>
@@ -201,10 +282,10 @@ const HomePage = (props) => {
                     <TextField
                         id="average_rating"
                         select
-                        label=""
+                        name="average_rating"
                         className={classes.textField}
-                        value={values}
-                        onChange={(e) => setValues(e.target.value)}
+                        // value={values}
+                        onChange={handleChange}
                         SelectProps={{
                         native: true,
                         }}
@@ -219,20 +300,26 @@ const HomePage = (props) => {
                      <Typography variant="h6" component="h3">Start Time</Typography>
                     <TextField
                         id="start"
+                        name="start"
                         type="time"
+                        onChange={handleChange}
                         className={classes.field}
                     />
                      <Typography variant="h6" component="h3">End Time</Typography>
                     <TextField
                         id="end"
+                        name="end"
                         type="time"
+                        onChange={handleChange}
                         className={classes.field}
                     />
                      <Typography variant="h6" component="h3">Hours</Typography>
                     <TextField
                         id="hours"
                         label="Hours"
+                        name="hours"
                         type="number"
+                        onChange={handleChange}
                         className={classes.field}
                     />
                     {/* maybe add this to a formik component ??? may help with submitting... */}
