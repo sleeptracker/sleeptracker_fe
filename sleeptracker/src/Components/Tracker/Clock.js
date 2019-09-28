@@ -9,7 +9,7 @@ const useStyles = makeStyles({
         alignItems: 'center',
         width: '200px',
         height: '100px',
-        color: 'white',
+        color: '#F7FA78',
         backgroundColor: '#1A185B',
         fontSize: '30px',
         boxShadow: '5px 5px 10px gray'
