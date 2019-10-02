@@ -77,7 +77,7 @@ const Login = ({ values, errors, touched, status, setUser, history }) => {
 
     useEffect(() => {
         if (status) {
-            if (Object.keys(status).includes('token')) { 
+            if (Object.keys(status).includes('userId')) { 
             setUser(status);
             history.push('/Home/Home');
             } else {
@@ -129,10 +129,8 @@ handleSubmit: (values, { setStatus } ) => {
     .then(res => {
         let token = res.data.token;
         const userId = res.data.id;
-        console.log(res.data)
         localStorage.setItem("token", token)
         setStatus({
-            token: token,
             userId: userId
         });
     })

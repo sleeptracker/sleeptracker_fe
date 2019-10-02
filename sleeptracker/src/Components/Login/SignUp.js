@@ -141,7 +141,6 @@ export default withFormik({
             let userId = res.data.id;
             localStorage.setItem("token", token)
             setStatus({
-                token: token,
                 userId: userId
             })
         })

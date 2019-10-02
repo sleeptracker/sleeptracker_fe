@@ -94,6 +94,7 @@ const HomePage = (props) => {
         average_rating: "1"
 
     })
+
     const [start, setStart] = useState();
     const [end, setEnd] = useState();
 
@@ -155,7 +156,7 @@ const HomePage = (props) => {
     const deleteItem = (id) => {
         axios.delete(`https://sleeptrack.herokuapp.com/api/sleepData/${id}`, {
             headers: {
-                "authorize": props.user.token
+                "authorize": localStorage.getItem('token')
             }
         })
         .then(res => {
@@ -181,7 +182,7 @@ const HomePage = (props) => {
         console.log(form)
             axios.put(`https://sleeptrack.herokuapp.com/api/sleepData/${id}`, form, {
                 headers: {
-                    "authorize": props.user.token
+                    "authorize": localStorage.getItem('token')
                 }
             })
             .then(res => {
@@ -209,7 +210,7 @@ const HomePage = (props) => {
         if(props.user.userId) {
             axios.get(`https://sleeptrack.herokuapp.com/api/user/${props.user.userId}`, {
                 headers: {
-                    "authorize": props.user.token
+                    "authorize": localStorage.getItem('token')
                 }
             })
             .then(res => {

@@ -106,13 +106,14 @@ const NavBar = (props) => {
     
     const handleLogout = () => {
       props.setUser({});
+      localStorage.removeItem('token')
       props.history.push('/');
     }
 
     useEffect(() => {
       if (props.user.userId) {
         axios.get(`https://sleeptrack.herokuapp.com/api/user/${props.user.userId}`, {
-        headers: {"authorize" : props.user.token}
+        headers: {"authorize" : localStorage.getItem('token')}
       })
         .then(res => {
           setCurrentUser(res.data.username);
