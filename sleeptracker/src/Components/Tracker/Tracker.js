@@ -87,7 +87,7 @@ function Tracker(props) {
                 "average_rating": `${rating}`
             }, {
                 headers: {
-                    "authorize": props.user.token
+                    "authorize": localStorage.getItem('token')
                 }})
                 .then(res => {
                     console.log(res)
@@ -109,7 +109,7 @@ function Tracker(props) {
     
 
     useEffect(() => {
-        axios.get(`https://sleeptrack.herokuapp.com/api/user/${props.user.userId}`, {headers: {"authorize": props.user.token}})
+        axios.get(`https://sleeptrack.herokuapp.com/api/user/${props.user.userId}`, {headers: {"authorize": localStorage.getItem('token')}})
             .then(res => {
                 const sleepDataArray = res.data.sleepData;
 
